@@ -6,6 +6,12 @@ LABEL name=lambda/python/clamav
 LABEL version=1.0
 
 ARG CACHE_DATE=1
+RUN pip install --upgrade pip
+RUN dnf update && dnf upgrade -y
+RUN pip install --upgrade urllib3
+RUN curl -Lo /usr/local/bin/aws-lambda-rie https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest/download/aws-lambda-rie && \
+    chmod +x /usr/local/bin/aws-lambda-rie
+
 COPY requirements.in /var/task/requirements.in
 RUN dnf update -y \
     && dnf -y install clamav1.4 clamd1.4 p7zip \
